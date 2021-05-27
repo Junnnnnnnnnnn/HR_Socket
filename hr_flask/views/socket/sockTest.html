@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var socket = io();
+        var $___INFO = new Object();
+        $(function(){
+
+            socket.on("connect", function(result){
+                if(result){
+                    console.log(result);
+                    $___INFO.sid = result;
+                    socket.emit("message",$___INFO);
+                }
+            });
+            socket.on("message", function(result){
+                if(result){
+                    if(result == $___INFO.sid){
+                        addList("나! [SID] :::  "+ result);
+                    }else{
+                        addList("[SID] :::  "+ result);
+                    }
+                }
+            });
+
+            socket.on("disconnect",function(result){
+                if(result){
+                    emit("message",result+"님이 퇴장 하셧습니다.");
+                }
+            });
+            $(".clickBox ul li").click(function(){
+                socket.emit("clickBox",1);
+            });
+            socket.on("clickBox",function(result){
+                if(result){
+                    console.log(result.clickBoxNum);
+                }
+            });
+        });
+
+        function addList(msg){
+            $(".list").append('<li>'+msg+'</li>');
+        }
+
+    </script>
+</head>
+<style>
+    .clickBox ul li{
+        width: 300px;
+        height: 300px;
+        border: 1px solid #333;
+        list-style-type: none;
+    }
+</style>
+<body>
+    <p>참가자</p>
+    <ul class="list"></ul>
+    <div class="clickBox">
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</body>
+</html>
