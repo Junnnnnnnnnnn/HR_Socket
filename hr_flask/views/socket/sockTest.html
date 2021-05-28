@@ -5,10 +5,12 @@
     <title>Title</title>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-    <script type="text/javascript">
+</head>
+<script type="text/javascript">
         var socket = io();
         var $___INFO = new Object();
         $(function(){
+            imgList();
 
             socket.on("connect", function(result){
                 if(result){
@@ -38,6 +40,7 @@
             socket.on("clickBox",function(result){
                 if(result){
                     console.log(result.clickBoxNum);
+                    $(".clickBox ul li:nth-child(1)").html(result.clickBoxNum);
                 }
             });
         });
@@ -45,9 +48,32 @@
         function addList(msg){
             $(".list").append('<li>'+msg+'</li>');
         }
+        function imgList(){
+            var result = new Object();
+            $.ajax({
+                url:"/sftp",
+                data:{
+                    data:"데이터"
+                },
+                async:false,
+                datatype:"json",
+                type:"get",
+                success:function(data){
+                    result = data;
+                }
+            });
+            console.log(result.list);
+            for(i in result.list){
+                $(".imgList").append(
+                    '<li><img src="'+ result.list[i].photo +'"></li>'
+                );
+            }
+        }
+
+
+
 
     </script>
-</head>
 <style>
     .clickBox ul li{
         width: 300px;
@@ -59,8 +85,9 @@
 <body>
     <p>참가자</p>
     <ul class="list"></ul>
+    <ul class="imgList"></ul>
     <div class="clickBox">
-        <ul>
+        <ul draggable="true">
             <li></li>
             <li></li>
         </ul>
