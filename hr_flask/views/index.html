@@ -3,8 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        var num = 60 * 3; // 몇분을 설정할지의 대한 변수 선언
+        var myVar;
+        $(function(){
+            function time(){
+                myVar = setInterval(alertFunc, 1000);
+            }
+            time();
+        });
+        function alertFunc() {
+            var min = num / 60;
+            min = Math.floor(min);
+
+            var sec = num - (60 * min);
+            console.log(min)
+            console.log(sec)
+
+            var $input = $('.input').val(min + '분' + sec + '초');
+
+            if(num == 0){
+                clearInterval(myVar) // num 이 0초가 되었을대 clearInterval로 타이머 종료
+            }
+            num--;
+        }
+    </script>
+
 </head>
 <body>
     <h1>안녕</h1>
+    <input type="text" class="input">
+
 </body>
 </html>

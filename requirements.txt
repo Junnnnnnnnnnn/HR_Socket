@@ -1,0 +1,16 @@
+bs4
+mysql
+mysql-connector
+SQLAlchemy
+requests
+flask
+flask_cors
+flask_restx
+flask-login
+flask-swagger-ui
+flask-migrate
+flask-session
+flask-socketio
+Image
+paramiko
+cssutils
